@@ -1,6 +1,9 @@
 (function(){
 'use strict';
-var DATA=(window.MONET||[]).map(function(r,i){r.i=i;return r;});
+var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
+var HIST=window.HIST||null,histLoading=false;
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=2';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function H(r){return HIST&&HIST[r.k];}
 var PAGE=120;
 
 var T={
@@ -17,7 +20,7 @@ var T={
   all:'Все',shown:function(n,t){return 'Показано <b>'+n+'</b> из <b>'+t+'</b>';},
   found:function(n){return 'Найдено: <b>'+n+'</b>';},reset:'Сбросить фильтры',
   more:function(n){return 'Показать ещё '+n;},empty:'Ничего не найдено. Попробуйте другое слово или сбросьте фильтры.',
-  noimg:'Нет открытого изображения',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
+  noimg:'Нет открытого изображения',lostT:'Утраченные и неизвестные работы',lostI:'Эти картины есть в каталоге Вильденштейна, но их изображение неизвестно: одни утрачены или уничтожены, другие известны только по письмам Моне, счетам и архивам торговцев, и ни одной фотографии их не сохранилось.',hHist:'История картины',hProv:'Путь картины: владельцы',hFate:'Судьба картины',hSrc:'По данным каталога-резоне Д. Вильденштейна (1996). Пересказ, не цитата.',noPhotoT:'Изображение неизвестно',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
   commons:'Изображение на Викискладе',wikidata:'Wikidata',wiki:'Статья в Википедии',noW:'без номера W',close:'Закрыть',
   yearSel:function(y){return 'Год: <b>'+y+'</b>';}},
  en:{eyebrow:'In memory of the master',name:'Claude Monet',
@@ -33,7 +36,7 @@ var T={
   all:'All',shown:function(n,t){return 'Showing <b>'+n+'</b> of <b>'+t+'</b>';},
   found:function(n){return 'Found: <b>'+n+'</b>';},reset:'Clear filters',
   more:function(n){return 'Show '+n+' more';},empty:'Nothing found. Try another word or clear the filters.',
-  noimg:'No open image',year:'Year',dims:'Size',dimsU:'cm',where:'Collection',cat:'Catalogue',series:'Series',
+  noimg:'No open image',lostT:'Lost and unrecorded works',lostI:'These paintings are listed in the Wildenstein catalogue, but no image of them is known: some were lost or destroyed, others are known only from Monet’s letters, account books and dealers’ archives, and no photograph of them survives.',hHist:'About the painting',hProv:'Provenance',hFate:'What happened to it',hSrc:'Based on D. Wildenstein’s catalogue raisonné (1996), summarised in our own words.',noPhotoT:'No image known',year:'Year',dims:'Size',dimsU:'cm',where:'Collection',cat:'Catalogue',series:'Series',
   commons:'Image on Wikimedia Commons',wikidata:'Wikidata',wiki:'Wikipedia article',noW:'no W number',close:'Close',
   yearSel:function(y){return 'Year: <b>'+y+'</b>';}}
 };
@@ -58,6 +61,8 @@ var LOC=window.LOCAL||{};var ZOOM_BASE=window.ZOOM_BASE||'https://vasiliad.githu
 function loc(r){return LOC[r.k];}
 function thumb(f,w){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width='+w;}
 function px(r){return r.hi?r.hi.w*r.hi.h:(r.iw?r.iw*r.ih:0);}
+function hasImg(r){return !!(loc(r)||r.img||(r.hi&&r.hi.iiif&&r.hi.src!=='aic'));}
+function fateLine(r){var h=H(r);if(h&&h.fx)return h.fx[st.lang==='ru'?0:1];return '';}
 function qual(r){if(!r.img&&!r.hi)return 'none';if(r.scan&&!r.hi)return 'scan';var p=px(r);return p>=8e6?'hi':p>=2e6?'mid':'low';}
 function bigSrc(r){if(loc(r))return 'img/1600/'+r.k+'.webp';if(r.hi&&r.hi.iiif&&(r.hi.src!=='aic'||!r.img))return r.hi.iiif+'/full/'+(r.hi.src==='aic'?'1686,':'1600,')+'/0/default.jpg';if(r.hi&&r.hi.url&&!r.img)return r.hi.url;return r.img?thumb(r.img,1280):'';}
 function origUrl(r){if(r.hi)return r.hi.iiif?r.hi.iiif+'/full/max/0/default.jpg':r.hi.url;return r.img?'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(r.img):'';}
@@ -69,7 +74,7 @@ DATA.forEach(function(r){r._s=[r.w?'w'+r.w:'',r.en,r.ru,r.fr,r.pen,r.pru,r.cen,r
 
 /* facts */
 function renderFacts(){
-  var img=DATA.filter(function(r){return r.img;}).length;
+  var img=DATA.filter(hasImg).length;
   var mus=DATA.filter(function(r){return !isPrivate(r);}).length;
   var wn=DATA.filter(function(r){return r.w&&/^\d+$/.test(r.w);}).length;var f=[[DATA.length,tt().fWorks],[img,tt().fImg],[mus,tt().fMus],[DATA.filter(function(r){return r.st==='private';}).length,st.lang==='ru'?'в частных собраниях':'in private hands'],[DATA.filter(function(r){return qual(r)==='hi';}).length,st.lang==='ru'?'в высоком качестве (8+ Мп)':'in high resolution (8+ MP)']];
   $('facts').innerHTML=f.map(function(x){return '<div><dt>'+x[1]+'</dt><dd>'+x[0].toLocaleString(st.lang==='ru'?'ru-RU':'en-US')+'</dd></div>';}).join('');
@@ -113,10 +118,19 @@ function apply(resetPage){
   if(st.sort==='year')L.sort(function(a,b){return (a.yr||9999)-(b.yr||9999)||a._wn-b._wn;});
   else if(st.sort==='title')L.sort(function(a,b){return coll.compare(title(a),title(b));});
   else L.sort(function(a,b){return a._wn-b._wn||(a.yr||9999)-(b.yr||9999);});
-  st.list=L;if(resetPage)st.shown=PAGE;
+  var sepLost=!(st.where==='lost'||st.q2==='none');
+  st.lost=sepLost?L.filter(function(r){return !hasImg(r);}):[];
+  if(sepLost)L=L.filter(function(r){return hasImg(r);});
+  st.list=L.concat(st.lost);st.nimg=L.length;if(resetPage)st.shown=PAGE;
   renderGrid();
 }
+function lostCard(r){
+  var f=fateLine(r);var h=H(r);
+  var m=[r.y,place(r)].filter(Boolean).map(function(x){return '<span>'+esc(x)+'</span>';}).join('');
+  return '<button type="button" class="card lostcard" data-i="'+r.i+'"><span class="cap"><span class="w">'+(r.w?'W'+esc(r.w):esc(tt().noW))+'</span><span class="t">'+esc(title(r))+'</span><span class="m">'+m+'</span>'+(f?'<span class="fx">'+esc(f)+'</span>':'')+'</span></button>';
+}
 function card(r){
+  if(!hasImg(r))return lostCard(r);
   var tsrc=loc(r)?'img/400/'+r.k+'.webp':r.img?thumb(r.img,330):(r.hi&&r.hi.iiif&&r.hi.src!=='aic'?r.hi.iiif+'/full/400,/0/default.jpg':'');
   var im=tsrc?'<img loading="lazy" decoding="async" src="'+tsrc+'" alt="'+esc(title(r))+'">'+(qual(r)==='hi'?'<span class="hd">HD</span>':''):
     '<span class="noimg"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3 16l5-5 4 4 3-3 6 6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'+tt().noimg+'</span>';
@@ -124,15 +138,17 @@ function card(r){
   return '<button type="button" class="card" data-i="'+r.i+'"><span class="frame">'+im+'</span><span class="cap"><span class="w">'+(r.w?'W'+esc(r.w):esc(tt().noW))+'</span><span class="t">'+esc(title(r))+'</span><span class="m">'+m+'</span></span></button>';
 }
 function renderGrid(){
-  var L=st.list,n=Math.min(st.shown,L.length);
+  var L=st.list.slice(0,st.nimg),n=Math.min(st.shown,L.length);
   var filt=st.q||st.ser||st.year||st.cty||st.where!=='all'||st.q2!=='all';
   var s=filt?tt().found(L.length):tt().shown(n,L.length);
   if(filt&&n<L.length)s+=' · '+tt().shown(n,L.length);
   if(st.year)s+=' · '+tt().yearSel(st.year);
   if(filt)s+=' <button type="button" id="reset">'+tt().reset+'</button>';
   $('status').innerHTML=s;
-  $('grid').innerHTML=L.length?L.slice(0,n).map(card).join(''):'<p class="empty">'+tt().empty+'</p>';
-  var left=L.length-n;$('more').hidden=left<=0;$('more').textContent=tt().more(Math.min(PAGE,left));
+  $('grid').innerHTML=(L.length||st.lost.length)?L.slice(0,n).map(card).join(''):'<p class="empty">'+tt().empty+'</p>';
+  var left=L.length-n;
+  var ls=$('lostsec');
+  if(left<=0&&st.lost.length){ls.hidden=false;$('lost-h').textContent=tt().lostT+' · '+st.lost.length;$('lost-i').textContent=tt().lostI;var draw=function(){$('lostgrid').innerHTML=st.lost.map(lostCard).join('');};draw();loadHist(draw);}else ls.hidden=true;$('more').hidden=left<=0;$('more').textContent=tt().more(Math.min(PAGE,left));
 }
 $('status').addEventListener('click',function(e){if(e.target.id!=='reset')return;st.q='';st.ser='';st.year=null;st.where='all';st.cty='';st.q2='all';$('qual').value='all';$('q').value='';$('where').value='all';$('cty').value='';renderChips();renderTimeline();apply(true);});
 $('more').addEventListener('click',function(){st.shown+=PAGE;renderGrid();});
@@ -144,23 +160,26 @@ $('cty').addEventListener('change',function(){st.cty=this.value;apply(true);});
 $('qual').addEventListener('change',function(){st.q2=this.value;apply(true);});
 function renderCty(){var c={};DATA.forEach(function(r){if(r.cen){c[r.cen]=c[r.cen]||[r.cru,0];c[r.cen][1]++;}});var ks=Object.keys(c).sort(function(a,b){return c[b][1]-c[a][1];});$('cty').innerHTML='<option value="">'+(st.lang==='ru'?'Все страны':'All countries')+'</option>'+ks.map(function(k){return '<option value="'+esc(k)+'"'+(st.cty===k?' selected':'')+'>'+esc(st.lang==='ru'?c[k][0]:k)+' ('+c[k][1]+')</option>';}).join('');}
 $('grid').addEventListener('click',function(e){var b=e.target.closest('.card');if(b)openD(+b.dataset.i);});
+$('lostgrid').addEventListener('click',function(e){var b=e.target.closest('.card');if(b)openD(+b.dataset.i);});
 
 /* detail */
 var cur=null,dlg=$('dlg');
 function openD(i){
   var r=DATA[i];cur=i;
-  $('d-fig').innerHTML=bigSrc(r)?'<button type="button" class="zoomable" id="d-zoom-img" aria-label="'+(st.lang==='ru'?'Приблизить':'Zoom in')+'"><img src="'+bigSrc(r)+'" alt="'+esc(title(r))+'"></button>':'<span class="noimg"><svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 16l5-5 4 4 3-3 6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'+tt().noimg+'</span>';
+  $('d-fig').innerHTML=bigSrc(r)?'<button type="button" class="zoomable" id="d-zoom-img" aria-label="'+(st.lang==='ru'?'Приблизить':'Zoom in')+'"><img src="'+bigSrc(r)+'" alt="'+esc(title(r))+'"></button>':'<div class="nophoto"><p class="np-t">'+tt().noPhotoT+'</p><p class="np-x" id="d-npx">'+esc(fateLine(r))+'</p></div>';
   $('d-w').textContent=r.w?('W'+r.w):tt().noW;
   $('d-title').textContent=title(r);
   var a=alt(r);$('d-alt').textContent=a.join(' · ');$('d-alt').hidden=!a.length;
   var dl=[];
   if(r.y)dl.push([tt().year,r.y]);
-  if(r.dim)dl.push([tt().dims,r.dim+' '+tt().dimsU]);
+  if(r.dim&&!/\?/.test(r.dim))dl.push([tt().dims,r.dim+' '+tt().dimsU]);
   dl.push([tt().where,place(r)]);
   if(country(r))dl.push([st.lang==='ru'?'Страна':'Country',country(r)]);
   if(r.sale)dl.push([st.lang==='ru'?'Продажа':'Sale',(st.lang==='ru'?'последняя известная: ':'last known: ')+r.sale]);
   if(r.note==='same215')dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'По каталогу это та же картина, что W215':'Per the catalogue, the same painting as W215']);
-  if(r.w==='96')dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'Номер есть в каталоге; распознать запись из скана не удалось — см. том II':'The number exists in the catalogue; the scanned entry could not be read — see volume II']);
+  if(r.same)dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'По каталогу Вильденштейна это та же картина, что W'+r.same+'; изображение и сведения — оттуда':'Per the Wildenstein catalogue this is the same painting as W'+r.same+'; image and details are taken from there']);
+  if(r.whole)dl.push([st.lang==='ru'?'Изображение':'Image',st.lang==='ru'?'Показана вся композиция целиком, частью которой является эта панель (см. W'+r.whole+')':'The photo shows the whole composition this panel belongs to (see W'+r.whole+')']);
+  if(false&&r.w==='96')dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'Номер есть в каталоге; распознать запись из скана не удалось — см. том II':'The number exists in the catalogue; the scanned entry could not be read — see volume II']);
   if(r.w)dl.push([tt().cat,'Wildenstein '+r.w+(vol(r)?' ('+(st.lang==='ru'?'т. ':'vol. ')+vol(r)[0]+')':'')]);
   if(r.ser&&r.ser.length)dl.push([tt().series,r.ser.map(function(s){return st.lang==='ru'?SERN[s][1]:SERN[s][2];}).join(', ')]);
   if(px(r))dl.push([st.lang==='ru'?'Изображение':'Image',nf(r.hi?r.hi.w:r.iw)+' × '+nf(r.hi?r.hi.h:r.ih)+' px · '+srcName(r)]);
@@ -173,9 +192,20 @@ function openD(i){
   if(vol(r))L.push('<a href="https://archive.org/details/'+vol(r)[1]+'" target="_blank" rel="noopener">'+(st.lang==='ru'?'Каталог-резоне, том ':'Catalogue raisonné, vol. ')+vol(r)[0]+'</a>');
   if(r.wp)L.push('<a href="https://en.wikipedia.org/wiki/'+encodeURIComponent(r.wp)+'" target="_blank" rel="noopener">'+tt().wiki+'</a>');
   $('d-links').innerHTML=L.join('');
+  renderHist(r);if(!HIST)loadHist(function(){if(cur===r.i){renderHist(r);var x=$('d-npx');if(x)x.textContent=fateLine(r);}});
   var p=st.list.indexOf(r);$('d-prev').disabled=p<=0;$('d-next').disabled=p<0||p>=st.list.length-1;
   if(!dlg.open)dlg.showModal();
   var h=r.w?'w'+r.w:'i'+r.i;if(location.hash!=='#'+h)history.replaceState(null,'','#'+h);
+}
+function renderHist(r){
+  var h=H(r),o='',ru=st.lang==='ru'?0:1;
+  if(h){
+    if(h.fx&&hasImg(r))o+='<h3>'+tt().hFate+'</h3><p>'+esc(h.fx[ru])+'</p>';
+    if(h.h&&h.h[ru])o+='<h3>'+tt().hHist+'</h3><p>'+esc(h.h[ru])+'</p>';
+    if(h.p&&h.p[ru]&&h.p[ru].length)o+='<h3>'+tt().hProv+'</h3><ol class="prov">'+h.p[ru].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
+    if(o)o+='<p class="hsrc">'+tt().hSrc+'</p>';
+  }
+  $('d-hist').innerHTML=o;$('d-hist').hidden=!o;
 }
 function step(d){var p=st.list.indexOf(DATA[cur]);var n=st.list[p+d];if(n)openD(n.i);}
 $('d-prev').addEventListener('click',function(){step(-1);});
