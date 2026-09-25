@@ -2,8 +2,8 @@
 'use strict';
 var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
 var HIST=window.HIST||null,histLoading=false;
-function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=6';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
-function H(r){return HIST&&HIST[r.k];}
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=7';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function H(r){if(!HIST)return null;var own=HIST[r.k];if(r.same){var o=HIST['w'+r.same];if(o){var m={};for(var x in o)if(x!=='fx'&&x!=='f')m[x]=o[x];if(own&&own.nw)m.nw=own.nw;return m;}}return own;}
 var PAGE=120;
 
 var T={
@@ -115,12 +115,14 @@ function apply(resetPage){
     return true;
   });
   var coll=new Intl.Collator(st.lang);
+  var exact=/^w\.?\s?(\d+[a-z]?)$/.exec(q.replace(/\s+/g,''));
   if(st.sort==='year')L.sort(function(a,b){return (a.yr||9999)-(b.yr||9999)||a._wn-b._wn;});
   else if(st.sort==='title')L.sort(function(a,b){return coll.compare(title(a),title(b));});
   else L.sort(function(a,b){return a._wn-b._wn||(a.yr||9999)-(b.yr||9999);});
   var sepLost=!(st.where==='lost'||st.q2==='none');
   st.lost=sepLost?L.filter(function(r){return !hasImg(r);}):[];
   if(sepLost)L=L.filter(function(r){return hasImg(r);});
+  if(exact){var ex=exact[1];L.sort(function(a,b){return (b.w===ex)-(a.w===ex);});}
   st.list=L.concat(st.lost);st.nimg=L.length;if(resetPage)st.page=0;
   renderGrid();
 }
@@ -210,7 +212,7 @@ function openD(i){
 function renderHist(r){
   var h=H(r),o='',ru=st.lang==='ru'?0:1;
   if(h){
-    if(h.nw)o+='<h3>'+(st.lang==='ru'?'Находка':'Rediscovered')+'</h3><p>'+esc(h.nw[ru])+' <a href="'+h.nw[2]+'" target="_blank" rel="noopener">'+esc(h.nw[3])+'</a></p>';
+    if(h.nw)o+='<h3>'+(st.lang==='ru'?'Новое о картине':'Recent news')+'</h3><p>'+esc(h.nw[ru])+' <a href="'+h.nw[2]+'" target="_blank" rel="noopener">'+esc(h.nw[3])+'</a></p>';
     if(h.fx&&hasImg(r))o+='<h3>'+tt().hFate+'</h3><p>'+esc(h.fx[ru])+'</p>';
     if(h.h&&h.h[ru])o+='<h3>'+tt().hHist+'</h3><p>'+esc(h.h[ru])+'</p>';
     if(h.nt)o+='<h3>'+(st.lang==='ru'?'Версия':'A possibility')+'</h3><p>'+esc(h.nt[ru])+'</p>';
