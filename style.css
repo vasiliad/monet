@@ -197,3 +197,17 @@ dialog::backdrop{background:rgba(10,18,20,.72)}
 .centline{margin:-4px 0 0;font:400 clamp(24px,3.2vw,40px)/1.1 var(--f-display);color:var(--accent);letter-spacing:.01em}
 @media (max-width:900px){.cent100{display:none}}
 @media (max-width:520px){.eyebrow{letter-spacing:.06em;font-size:10.5px;white-space:nowrap}}
+
+/* phones: compact, non-sticky filters */
+@media (max-width:600px),(max-height:500px){
+  .toolbar{position:static;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media (max-width:600px){
+  .tb-in{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tb-in .search{grid-column:1/-1}
+  .tb-in select{width:100%;min-width:0;font-size:14px;padding-inline:10px 26px;text-overflow:ellipsis}
+  .pager{gap:4px}
+  .pager>button{padding:0 10px;font-size:0}
+  .pager>button:first-child::before{content:'←';font-size:16px}
+  .pager>button:last-child::before{content:'→';font-size:16px}
+}
