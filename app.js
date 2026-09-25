@@ -2,7 +2,7 @@
 'use strict';
 var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
 var HIST=window.HIST||null,histLoading=false;
-function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=2';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=4';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
 function H(r){return HIST&&HIST[r.k];}
 var PAGE=120;
 
@@ -40,7 +40,7 @@ var T={
   commons:'Image on Wikimedia Commons',wikidata:'Wikidata',wiki:'Wikipedia article',noW:'no W number',close:'Close',
   yearSel:function(y){return 'Year: <b>'+y+'</b>';}}
 };
-var SER=[['waterlilies','Кувшинки','Water Lilies'],['japbridge','Японский мостик','Japanese Bridge'],['haystacks','Стога','Haystacks'],['poplars','Тополя','Poplars'],['rouen','Руанский собор','Rouen Cathedral'],['london','Лондон','London'],['venice','Венеция','Venice'],['etretat','Этрета','Étretat'],['belleile','Бель-Иль','Belle-Île'],['creuse','Крёз','Creuse'],['seine_morning','Утро на Сене','Mornings on the Seine'],['norway','Норвегия','Norway'],['garden','Сад в Живерни и цветы','Gardens & flowers']];
+var SER=[['waterlilies','Кувшинки','Water Lilies'],['japbridge','Японский мостик','Japanese Bridge'],['haystacks','Стога','Haystacks'],['poplars','Тополя','Poplars'],['rouen','Руанский собор','Rouen Cathedral'],['london','Лондон','London'],['venice','Венеция','Venice'],['manche','Побережье Ла-Манша','Channel coast'],['etretat','Этрета','Étretat'],['trouville','Трувиль и Довиль','Trouville & Deauville'],['belleile','Бель-Иль','Belle-Île'],['creuse','Крёз','Creuse'],['seine_morning','Утро на Сене','Mornings on the Seine'],['norway','Норвегия','Norway'],['garden','Сады и цветы','Gardens & flowers']];
 var SERN={};SER.forEach(function(s){SERN[s[0]]=s;});
 
 var st={lang:'ru',q:'',sort:'w',where:'all',cty:'',q2:'all',ser:'',year:null,page:0,list:[]};
@@ -212,6 +212,7 @@ function renderHist(r){
   if(h){
     if(h.fx&&hasImg(r))o+='<h3>'+tt().hFate+'</h3><p>'+esc(h.fx[ru])+'</p>';
     if(h.h&&h.h[ru])o+='<h3>'+tt().hHist+'</h3><p>'+esc(h.h[ru])+'</p>';
+    if(h.nt)o+='<h3>'+(st.lang==='ru'?'Версия':'A possibility')+'</h3><p>'+esc(h.nt[ru])+'</p>';
     if(h.p&&h.p[ru]&&h.p[ru].length)o+='<h3>'+tt().hProv+'</h3><ol class="prov">'+h.p[ru].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
     if(o)o+='<p class="hsrc">'+tt().hSrc+'</p>';
   }
