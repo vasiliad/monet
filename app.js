@@ -2,7 +2,7 @@
 'use strict';
 var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
 var HIST=window.HIST||null,histLoading=false;
-function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=5';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=6';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
 function H(r){return HIST&&HIST[r.k];}
 var PAGE=120;
 
