@@ -13,15 +13,15 @@ var T={
   searchLabel:'Поиск',ph:'Название, место, музей, номер W…',sortW:'По каталогу (W)',sortYear:'По году',sortTitle:'По названию',
   whereAll:'Все собрания',whereMuseum:'Только музеи',wherePrivate:'Частные коллекции',whereLost:'Утрачены или неизвестно где',
   aboutTitle:'О каталоге',srcTitle:'Источники',prev:'Предыдущая',next:'Следующая',
-  about1:'Основа — каталог-резоне Даниэля Вильденштейна (1996): номера от W1 до W1983 охватывают все известные картины Моне маслом, в каталоге есть каждый номер. Сведения о местонахождении сведены из Wikidata, английской и французской Википедии (включая список работ Моне в публичных собраниях по странам) и самого каталога, который Институт Вильденштейна–Платтнера открыл на Internet Archive. Изображения загружаются с Викисклада.',
+  about1:'Основа — каталог-резоне Даниэля Вильденштейна (1996): номера от W1 до W1983 охватывают все известные картины Моне маслом, в каталоге есть каждый номер. Сведения о местонахождении сведены из Wikidata, английской и французской Википедии (включая список работ Моне в публичных собраниях по странам) и самого каталога, который Институт Вильденштейна–Платтнера открыл на Internet Archive. Изображения хранятся на этом сайте: копии с Викисклада, из открытых коллекций музеев и сканы из каталога-резоне (они помечены). Картины, изображение которых неизвестно, собраны в конце каталога в разделе «Утраченные и неизвестные работы». Работы без номера W взяты из Wikidata и в каталоге Вильденштейна не значатся — их атрибуция может быть спорной.',
   about2:'Моне умер в 1926 году, его картины находятся в общественном достоянии. Точные фоторепродукции картин, как правило, тоже свободны; условия каждого снимка указаны на его странице на Викискладе — ссылка есть в карточке картины.',
   about3:'Около половины картин — в частных собраниях. Владельцы таких работ не публикуются, поэтому для них указаны страна (по данным каталога) и последняя известная продажа на аукционе, если она есть в источниках. Если вы нашли ошибку, её можно исправить в Wikidata — каталог пересобирается из этих данных.',
   fWorks:'картин в каталоге',fImg:'с изображением',fMus:'в музеях',fYears:'лет работы',
   all:'Все',shown:function(n,t){return 'Показано <b>'+n+'</b> из <b>'+t+'</b>';},
   found:function(n){return 'Найдено: <b>'+n+'</b>';},range:function(a,b,t){return 'Картины <b>'+a+'–'+b+'</b> из <b>'+t+'</b>';},prevP:'Назад',nextP:'Вперёд',reset:'Сбросить фильтры',
   more:function(n){return 'Показать ещё '+n;},empty:'Ничего не найдено. Попробуйте другое слово или сбросьте фильтры.',
-  noimg:'Нет открытого изображения',lostT:'Утраченные и неизвестные работы',lostI:'Эти картины есть в каталоге Вильденштейна, но их изображение неизвестно: одни утрачены или уничтожены, другие известны только по письмам Моне, счетам и архивам торговцев, и ни одной фотографии их не сохранилось.',hHist:'История картины',hProv:'Путь картины: владельцы',hFate:'Судьба картины',hSrc:'По данным каталога-резоне Д. Вильденштейна (1996). Пересказ, не цитата.',noPhotoT:'Изображение неизвестно',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
-  commons:'Изображение на Викискладе',wikidata:'Wikidata',wiki:'Статья в Википедии',noW:'без номера W',close:'Закрыть',
+  noimg:'Нет открытого изображения',qAll:'Любое изображение',qHi:'Высокое качество (8+ Мп)',qImg:'Цветная фотография',qScan:'Только скан из каталога',qNone:'Без изображения',csv1:'Скачать весь каталог таблицей (CSV)',csv2:'Список изображений (CSV)',fColor:'цветных фотографий',fScan:'сканов из каталога',fNone:'без изображения',noW2:'вне каталога W',extantNo:'Картина существует, но её свободной фотографии пока не нашлось.',lostT:'Утраченные и неизвестные работы',lostI:'Эти картины есть в каталоге Вильденштейна, но их изображение неизвестно: одни утрачены или уничтожены, другие известны только по письмам Моне, счетам и архивам торговцев, и ни одной фотографии их не сохранилось.',hHist:'История картины',hProv:'Путь картины: владельцы',hFate:'Судьба картины',hSrc:'По данным каталога-резоне Д. Вильденштейна (1996). Пересказ, не цитата.',noPhotoT:'Изображение неизвестно',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
+  commons:'Изображение на Викискладе',wikidata:'Wikidata',wiki:'Статья в Википедии',noW:'вне каталога W',close:'Закрыть',
   yearSel:function(y){return 'Год: <b>'+y+'</b>';}},
  en:{eyebrow:'5 December 1926 — 5 December 2026',cent:'A hundred years of remembrance',pastLink:'Monet’s pastels — 110 works →',name:'Claude Monet',
   lede:'A hundred years ago, on 5 December 1926, Claude Monet died at Giverny. He painted light: morning mist over the Seine, haystacks at sunset, the water-lily pond in his own garden. This catalogue gathers every painting we could find in open sources, ordered by the Wildenstein catalogue.',
@@ -29,15 +29,15 @@ var T={
   searchLabel:'Search',ph:'Title, place, museum, W number…',sortW:'By catalogue (W)',sortYear:'By year',sortTitle:'By title',
   whereAll:'All collections',whereMuseum:'Museums only',wherePrivate:'Private collections',whereLost:'Lost or location unknown',
   aboutTitle:'About the catalogue',srcTitle:'Sources',prev:'Previous',next:'Next',
-  about1:'The backbone is Daniel Wildenstein’s catalogue raisonné (1996): numbers W1 to W1983 cover every known oil painting by Monet, and every number is listed here. Locations are merged from Wikidata, the English and French Wikipedia (including the French list of Monet works in public collections by country) and the catalogue itself, which the Wildenstein Plattner Institute opened on the Internet Archive. Images load from Wikimedia Commons.',
+  about1:'The backbone is Daniel Wildenstein’s catalogue raisonné (1996): numbers W1 to W1983 cover every known oil painting by Monet, and every number is listed here. Locations are merged from Wikidata, the English and French Wikipedia (including the French list of Monet works in public collections by country) and the catalogue itself, which the Wildenstein Plattner Institute opened on the Internet Archive. Images are hosted on this site: copies from Wikimedia Commons, museum open-access collections and scans from the catalogue raisonné (marked as such). Paintings with no known image are gathered at the end, under “Lost and unrecorded works”. Works without a W number come from Wikidata and are not in the Wildenstein catalogue, so their attribution may be disputed.',
   about2:'Monet died in 1926 and his paintings are in the public domain. Faithful photographs of them are generally free as well; each image’s terms are on its Wikimedia Commons page, linked from the painting’s card.',
   about3:'About half of the paintings are in private hands. Owners are not public, so these entries show the country (from the catalogue) and the last known auction sale where sources have one. If you spot an error, you can fix it in Wikidata, which this catalogue is rebuilt from.',
   fWorks:'paintings listed',fImg:'with an image',fMus:'in museums',fYears:'years of work',
   all:'All',shown:function(n,t){return 'Showing <b>'+n+'</b> of <b>'+t+'</b>';},
   found:function(n){return 'Found: <b>'+n+'</b>';},range:function(a,b,t){return 'Paintings <b>'+a+'–'+b+'</b> of <b>'+t+'</b>';},prevP:'Previous',nextP:'Next',reset:'Clear filters',
   more:function(n){return 'Show '+n+' more';},empty:'Nothing found. Try another word or clear the filters.',
-  noimg:'No open image',lostT:'Lost and unrecorded works',lostI:'These paintings are listed in the Wildenstein catalogue, but no image of them is known: some were lost or destroyed, others are known only from Monet’s letters, account books and dealers’ archives, and no photograph of them survives.',hHist:'About the painting',hProv:'Provenance',hFate:'What happened to it',hSrc:'Based on D. Wildenstein’s catalogue raisonné (1996), summarised in our own words.',noPhotoT:'No image known',year:'Year',dims:'Size',dimsU:'cm',where:'Collection',cat:'Catalogue',series:'Series',
-  commons:'Image on Wikimedia Commons',wikidata:'Wikidata',wiki:'Wikipedia article',noW:'no W number',close:'Close',
+  noimg:'No open image',qAll:'Any image',qHi:'High resolution (8+ MP)',qImg:'Colour photograph',qScan:'Catalogue scan only',qNone:'No image',csv1:'Download the whole catalogue (CSV)',csv2:'List of images (CSV)',fColor:'colour photographs',fScan:'catalogue scans',fNone:'no image',noW2:'not in W catalogue',extantNo:'The painting survives, but no free photograph of it has been found yet.',lostT:'Lost and unrecorded works',lostI:'These paintings are listed in the Wildenstein catalogue, but no image of them is known: some were lost or destroyed, others are known only from Monet’s letters, account books and dealers’ archives, and no photograph of them survives.',hHist:'About the painting',hProv:'Provenance',hFate:'What happened to it',hSrc:'Based on D. Wildenstein’s catalogue raisonné (1996), summarised in our own words.',noPhotoT:'No image known',year:'Year',dims:'Size',dimsU:'cm',where:'Collection',cat:'Catalogue',series:'Series',
+  commons:'Image on Wikimedia Commons',wikidata:'Wikidata',wiki:'Wikipedia article',noW:'not in W catalogue',close:'Close',
   yearSel:function(y){return 'Year: <b>'+y+'</b>';}}
 };
 var SER=[['waterlilies','Кувшинки','Water Lilies'],['japbridge','Японский мостик','Japanese Bridge'],['haystacks','Стога','Haystacks'],['poplars','Тополя','Poplars'],['rouen','Руанский собор','Rouen Cathedral'],['london','Лондон','London'],['venice','Венеция','Venice'],['manche','Побережье Ла-Манша','Channel coast'],['etretat','Этрета','Étretat'],['trouville','Трувиль и Довиль','Trouville & Deauville'],['belleile','Бель-Иль','Belle-Île'],['creuse','Крёз','Creuse'],['seine_morning','Утро на Сене','Mornings on the Seine'],['norway','Норвегия','Norway'],['garden','Сады и цветы','Gardens & flowers']];
@@ -58,10 +58,11 @@ function isPrivate(r){return r.st!=='museum';}
 function sale(r){if(!r.sale)return '';return (st.lang==='ru'?'последняя известная продажа: ':'last known sale: ')+r.sale;}
 function vol(r){var n=parseInt(r.w,10);if(!n)return null;return n<=968?['II','c.rclaudemonetvolumeiiwildensteininstitute']:n<=1595?['III','c.rclaudemonetvolumeiiiwildensteininstitute']:['IV','c.rclaudemonetvolumeivwildensteininstitute'];}
 var LOC=window.LOCAL||{};var ZOOM_BASE=window.ZOOM_BASE||'https://vasiliad.github.io/monet-zoom/';
-function loc(r){return LOC[r.k];}
+function loc(r){return r.noimg?null:LOC[r.k];}
 function thumb(f,w){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width='+w;}
 function px(r){return r.hi?r.hi.w*r.hi.h:(r.iw?r.iw*r.ih:0);}
 function hasImg(r){return !!(loc(r)||r.img||(r.hi&&r.hi.iiif&&r.hi.src!=='aic'));}
+function gone(r){return ['lost','destroyed','unknown'].indexOf(r.st)>=0;}
 function fateLine(r){var h=H(r);if(h&&h.fx)return h.fx[st.lang==='ru'?0:1];return '';}
 function qual(r){if(!r.img&&!r.hi)return 'none';if(r.scan&&!r.hi)return 'scan';var p=px(r);return p>=8e6?'hi':p>=2e6?'mid':'low';}
 function bigSrc(r){if(loc(r))return 'img/1600/'+r.k+'.webp';if(r.hi&&r.hi.iiif&&(r.hi.src!=='aic'||!r.img))return r.hi.iiif+'/full/'+(r.hi.src==='aic'?'1686,':'1600,')+'/0/default.jpg';if(r.hi&&r.hi.url&&!r.img)return r.hi.url;return r.img?thumb(r.img,1280):'';}
@@ -74,9 +75,9 @@ DATA.forEach(function(r){r._s=[r.w?'w'+r.w:'',r.en,r.ru,r.fr,r.pen,r.pru,r.cen,r
 
 /* facts */
 function renderFacts(){
-  var img=DATA.filter(hasImg).length;
+  var img=DATA.filter(hasImg).length,col=DATA.filter(function(r){return hasImg(r)&&!(r.scan&&!r.hi);}).length,scn=img-col;
   var mus=DATA.filter(function(r){return !isPrivate(r);}).length;
-  var wn=DATA.filter(function(r){return r.w&&/^\d+$/.test(r.w);}).length;var f=[[DATA.length,tt().fWorks],[img,tt().fImg],[mus,tt().fMus],[DATA.filter(function(r){return r.st==='private';}).length,st.lang==='ru'?'в частных собраниях':'in private hands'],[DATA.filter(function(r){return qual(r)==='hi';}).length,st.lang==='ru'?'в высоком качестве (8+ Мп)':'in high resolution (8+ MP)']];
+  var wn=DATA.filter(function(r){return r.w&&/^\d+$/.test(r.w);}).length;var f=[[DATA.length,tt().fWorks],[col,tt().fColor],[scn,tt().fScan],[DATA.length-img,tt().fNone],[mus,tt().fMus],[DATA.filter(function(r){return r.st==='private';}).length,st.lang==='ru'?'в частных собраниях':'in private hands'],[DATA.filter(function(r){return qual(r)==='hi';}).length,st.lang==='ru'?'в высоком качестве (8+ Мп)':'in high resolution (8+ MP)']];
   $('facts').innerHTML=f.map(function(x){return '<div><dt>'+x[1]+'</dt><dd>'+x[0].toLocaleString(st.lang==='ru'?'ru-RU':'en-US')+'</dd></div>';}).join('');
 }
 
@@ -120,14 +121,14 @@ function apply(resetPage){
   else if(st.sort==='title')L.sort(function(a,b){return coll.compare(title(a),title(b));});
   else L.sort(function(a,b){return a._wn-b._wn||(a.yr||9999)-(b.yr||9999);});
   var sepLost=!(st.where==='lost'||st.q2==='none');
-  st.lost=sepLost?L.filter(function(r){return !hasImg(r);}):[];
-  if(sepLost)L=L.filter(function(r){return hasImg(r);});
+  st.lost=sepLost?L.filter(function(r){return !hasImg(r)&&gone(r);}):[];
+  if(sepLost)L=L.filter(function(r){return hasImg(r)||!gone(r);});
   if(exact){var ex=exact[1];L.sort(function(a,b){return (b.w===ex)-(a.w===ex);});}
   st.list=L.concat(st.lost);st.nimg=L.length;if(resetPage)st.page=0;
   renderGrid();
 }
 function lostCard(r){
-  var f=fateLine(r);var h=H(r);
+  var f=fateLine(r)||(!gone(r)?tt().extantNo:'');var h=H(r);
   var m=[r.y,place(r)].filter(Boolean).map(function(x){return '<span>'+esc(x)+'</span>';}).join('');
   return '<button type="button" class="card lostcard" data-i="'+r.i+'"><span class="cap"><span class="w">'+(r.w?'W'+esc(r.w):esc(tt().noW))+'</span><span class="t">'+esc(title(r))+'</span><span class="m">'+m+'</span>'+(f?'<span class="fx">'+esc(f)+'</span>':'')+'</span></button>';
 }
@@ -178,7 +179,7 @@ $('lostgrid').addEventListener('click',function(e){var b=e.target.closest('.card
 var cur=null,dlg=$('dlg');
 function openD(i){
   var r=DATA[i];cur=i;
-  $('d-fig').innerHTML=bigSrc(r)?'<button type="button" class="zoomable" id="d-zoom-img" aria-label="'+(st.lang==='ru'?'Приблизить':'Zoom in')+'"><img src="'+bigSrc(r)+'" alt="'+esc(title(r))+'"></button>':'<div class="nophoto"><p class="np-t">'+tt().noPhotoT+'</p><p class="np-x" id="d-npx">'+esc(fateLine(r))+'</p></div>';
+  $('d-fig').innerHTML=bigSrc(r)?'<button type="button" class="zoomable" id="d-zoom-img" aria-label="'+(st.lang==='ru'?'Приблизить':'Zoom in')+'"><img src="'+bigSrc(r)+'" alt="'+esc(title(r))+'"></button>':'<div class="nophoto"><p class="np-t">'+(gone(r)?tt().noPhotoT:(st.lang==='ru'?'Фотография пока не найдена':'No photograph found yet'))+'</p><p class="np-x" id="d-npx">'+esc(gone(r)?fateLine(r):tt().extantNo)+'</p></div>';
   $('d-w').textContent=r.w?('W'+r.w):tt().noW;
   $('d-title').textContent=title(r);
   var a=alt(r);$('d-alt').textContent=a.join(' · ');$('d-alt').hidden=!a.length;
@@ -255,6 +256,8 @@ function setLang(l){
   st.lang=l;document.documentElement.lang=l;
   try{localStorage.setItem('monet-lang',l);}catch(e){}
   [].forEach.call(document.querySelectorAll('[data-i18n]'),function(el){var k=el.getAttribute('data-i18n');if(typeof T[l][k]==='string')el.textContent=T[l][k];});
+  var qo=$('qual').options;qo[0].text=tt().qAll;qo[1].text=tt().qHi;qo[2].text=tt().qImg;qo[3].text=tt().qScan;qo[4].text=tt().qNone;
+  $('csv').textContent=tt().csv1;$('csv2').textContent=tt().csv2;
   $('q').placeholder=tt().ph;$('d-close').setAttribute('aria-label',tt().close);
   document.title=l==='ru'?'Клод Моне. Каталог картин':'Claude Monet. Catalogue of Paintings';
   $('lang-ru').setAttribute('aria-pressed',String(l==='ru'));$('lang-en').setAttribute('aria-pressed',String(l==='en'));
@@ -268,5 +271,7 @@ $('lang-en').addEventListener('click',function(){setLang('en');});
 setLang(st.lang);
 /* deep link */
 var h=location.hash.slice(1);
+function openHash(){var h=location.hash.slice(1);if(!h)return;var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r&&cur!==r.i)openD(r.i);}
+window.addEventListener('hashchange',openHash);
 if(h){var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r)openD(r.i);}
 })();
