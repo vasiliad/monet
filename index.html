@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Клод Моне. Каталог картин</title>
+<meta name="description" content="Каталог картин Клода Моне (1840–1926): около двух тысяч работ с номерами по каталогу Вильденштейна, датами, размерами и местом хранения.">
+<meta property="og:title" content="Клод Моне. Каталог картин">
+<meta property="og:description" content="Около двух тысяч картин Клода Моне в одном месте — в память о мастере.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%236b5aa6'/%3E%3Cellipse cx='16' cy='19' rx='9' ry='4' fill='%23a6d3c4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#grid">К каталогу</a>
+
+<header class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-top">
+      <p class="eyebrow" data-i18n="eyebrow">В память о мастере</p>
+      <div class="lang" role="group" aria-label="Язык / Language">
+        <button type="button" id="lang-ru" data-lang="ru" aria-pressed="true">RU</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <h1><span data-i18n="name">Клод Моне</span> <span class="dates">1840–1926</span></h1>
+    <p class="lede" data-i18n="lede">Он писал свет — утренний туман над Сеной, стога на закате, пруд с кувшинками в Живерни. Здесь собраны все картины, которые удалось найти в открытых источниках, в порядке каталога Вильденштейна.</p>
+    <dl class="facts" id="facts"></dl>
+  </div>
+</header>
+
+<section class="timeline-sec" aria-labelledby="tl-h">
+  <div class="wrap">
+    <div class="tl-head">
+      <h2 id="tl-h" data-i18n="tlTitle">Работы по годам</h2>
+      <p class="tl-hint" id="tl-hint" data-i18n="tlHint">Нажмите на год, чтобы увидеть картины этого года. Повторное нажатие снимает выбор.</p>
+    </div>
+    <div class="tl-scroll"><div class="timeline" id="timeline" role="group" aria-labelledby="tl-h"></div></div>
+  </div>
+</section>
+
+<div class="toolbar" id="toolbar">
+  <div class="wrap tb-in">
+    <label class="search">
+      <span class="sr" data-i18n="searchLabel">Поиск</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" placeholder="Название, место, музей, номер W…">
+    </label>
+    <select id="sort" aria-label="Сортировка">
+      <option value="w" data-i18n="sortW">По каталогу (W)</option>
+      <option value="year" data-i18n="sortYear">По году</option>
+      <option value="title" data-i18n="sortTitle">По названию</option>
+    </select>
+    <select id="where" aria-label="Где хранится">
+      <option value="all" data-i18n="whereAll">Все собрания</option>
+      <option value="museum" data-i18n="whereMuseum">Только музеи</option>
+      <option value="private" data-i18n="wherePrivate">Частные коллекции</option>
+      <option value="lost" data-i18n="whereLost">Утрачены или неизвестно где</option>
+    </select>
+    <select id="cty" aria-label="Страна"></select>
+    <select id="qual" aria-label="Качество изображения">
+      <option value="all">Любое изображение</option>
+      <option value="hi">Высокое качество (8+ Мп)</option>
+      <option value="img">С фотографией картины</option>
+      <option value="scan">Только скан из каталога</option>
+      <option value="none">Без изображения</option>
+    </select>
+  </div>
+  <div class="wrap chips" id="series" role="group" aria-label="Серии"></div>
+</div>
+
+<main class="wrap">
+  <p class="status" id="status" aria-live="polite"></p>
+  <div class="grid" id="grid"></div>
+  <div class="more"><button type="button" id="more" hidden></button></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <section>
+      <h2 data-i18n="aboutTitle">О каталоге</h2>
+      <p data-i18n="about1">Основа каталога — нумерация Даниэля Вильденштейна (Monet: Catalogue raisonné, 1996), обозначения вида W285. Сведения о картинах взяты из Wikidata и из списка картин Моне в английской Википедии. Изображения загружаются с Викисклада.</p>
+      <p data-i18n="about2">Моне умер в 1926 году, его картины находятся в общественном достоянии. Точные фоторепродукции картин, как правило, тоже свободны; условия каждого снимка указаны на его странице на Викискладе — ссылка есть в карточке картины.</p>
+      <p data-i18n="about3">Часть работ хранится в частных коллекциях, и хороших снимков у них нет. Такие картины показаны в каталоге без изображения. Если вы нашли ошибку, её можно исправить прямо в Wikidata — каталог обновляется из этих данных.</p>
+    </section>
+    <section>
+      <h2 data-i18n="srcTitle">Источники</h2>
+      <ul class="src">
+        <li><a href="https://www.wikidata.org/wiki/Q296" target="_blank" rel="noopener">Wikidata: Claude Monet (Q296)</a> — CC0</li>
+        <li><a href="https://en.wikipedia.org/wiki/List_of_paintings_by_Claude_Monet" target="_blank" rel="noopener">Wikipedia: List of paintings by Claude Monet</a> — CC BY-SA 4.0</li>
+        <li><a href="https://en.wikipedia.org/wiki/Water_Lilies_(Monet_series)" target="_blank" rel="noopener">Wikipedia: Water Lilies (Monet series)</a> — CC BY-SA 4.0</li>
+        <li><a href="https://fr.wikipedia.org/wiki/%C5%92uvres_de_Claude_Monet_dans_les_collections_accessibles_au_public" target="_blank" rel="noopener">Wikipédia: Œuvres de Claude Monet dans les collections accessibles au public</a> — CC BY-SA 4.0</li>
+        <li><a href="https://archive.org/details/c.rclaudemonetvolumeiiwildensteininstitute" target="_blank" rel="noopener">Wildenstein, Monet: Catalogue raisonné, т. II–IV (Wildenstein Plattner Institute)</a> — CC BY-NC-ND 4.0</li>
+        <li><a href="https://commons.wikimedia.org/wiki/Category:Paintings_by_Claude_Monet" target="_blank" rel="noopener">Wikimedia Commons: Paintings by Claude Monet</a></li>
+      </ul>
+      <p class="upd"><a href="data/monet_catalog.csv" download id="csv">Скачать весь каталог таблицей (CSV)</a> · <a href="data/monet_images.csv" download>Список лучших изображений (CSV)</a></p>
+      <p class="upd" id="upd"></p>
+    </section>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="d-title">
+  <div class="d-in">
+    <button type="button" class="d-close" id="d-close" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <figure class="d-fig" id="d-fig"></figure>
+    <div class="d-meta">
+      <p class="d-w" id="d-w"></p>
+      <h2 id="d-title"></h2>
+      <p class="d-alt" id="d-alt"></p>
+      <dl class="d-dl" id="d-dl"></dl>
+      <p class="d-links" id="d-links"></p>
+      <div class="d-nav">
+        <button type="button" id="d-prev"><span aria-hidden="true">←</span> <span data-i18n="prev">Предыдущая</span></button>
+        <button type="button" id="d-next"><span data-i18n="next">Следующая</span> <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="zoom" id="zoom" aria-labelledby="zoom-title">
+  <div class="zoom-bar"><p id="zoom-title"></p><button type="button" id="zoom-close">Закрыть</button></div>
+  <div class="zoom-view" id="zoom-view"></div>
+</dialog>
+
+<script src="vendor/openseadragon/openseadragon.min.js"></script>
+<script src="data/monet.js"></script>
+<script src="data/local.js" onerror="window.LOCAL={}"></script>
+<script src="app.js"></script>
+</body>
+</html>
