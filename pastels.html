@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Клод Моне. Пастели</title>
+<meta name="description" content="Пастели Клода Моне — 110 работ по пересмотренному каталогу Института Вильденштейна–Платтнера.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%236b5aa6'/%3E%3Cellipse cx='16' cy='19' rx='9' ry='4' fill='%23a6d3c4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css?v=6">
+<style>
+.p-hero{padding:40px 0 22px}
+.p-hero h1{font:400 clamp(40px,7vw,84px)/.95 var(--f-display);margin:8px 0 14px}
+.p-hero p{max-width:70ch;color:var(--muted);margin:0 0 10px}
+.p-nav{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.p-nav a{font-weight:600;text-decoration:none}
+.p-cap{font-size:12px;color:var(--muted);margin-top:4px}
+.zoom-view{background:#111}
+</style>
+</head>
+<body>
+<header class="wrap p-hero">
+  <div class="p-nav">
+    <a href="./" id="back">← Картины маслом</a>
+    <div class="lang" role="group" aria-label="Язык / Language">
+      <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+  <p class="eyebrow" id="eb">Клод Моне · 1840–1926</p>
+  <h1 id="h1">Пастели</h1>
+  <p id="lede"></p>
+  <p id="src"></p>
+</header>
+<main class="wrap">
+  <p class="status" id="status"></p>
+  <div class="grid" id="grid"></div>
+</main>
+<dialog id="dlg" aria-labelledby="d-title">
+  <div class="d-in">
+    <button type="button" class="d-close" id="d-close" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <figure class="d-fig" id="d-fig"></figure>
+    <div class="d-meta">
+      <p class="d-w" id="d-w"></p>
+      <h2 id="d-title"></h2>
+      <dl class="d-dl" id="d-dl"></dl>
+      <p class="d-links" id="d-links"></p>
+      <div class="d-nav"><button type="button" id="d-prev">←</button><button type="button" id="d-next">→</button></div>
+    </div>
+  </div>
+</dialog>
+<dialog class="zoom" id="zoom"><div class="zoom-bar"><p id="zoom-title"></p><button type="button" id="zoom-close">×</button></div><div class="zoom-view" id="zoom-view"></div></dialog>
+<script src="vendor/openseadragon/openseadragon.min.js"></script>
+<script src="data/pastels.js?v=1"></script>
+<script>
+(function(){
+var P=window.PASTELS||[],lang='ru',cur=0,$=function(i){return document.getElementById(i);};
+try{var sl=localStorage.getItem('monet-lang');if(sl==='en'||sl==='ru')lang=sl;}catch(e){}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+var T={ru:{back:'← Картины маслом',h1:'Пастели',eb:'Клод Моне · 1840–1926',
+ lede:'Моне начинал с карикатур и рисунков пастелью и возвращался к пастели всю жизнь: морские берега Нормандии 1860-х, облака и закаты, портреты детей Ошеде, лондонские мосты 1900–1901 годов. Здесь все 110 пастелей из пересмотренного каталога, который готовит Институт Вильденштейна–Платтнера.',
+ src:'Данные и изображения: <a href="https://digitalprojects.wpi.art/monet/artworks" target="_blank" rel="noopener">Wildenstein Plattner Institute, Claude Monet: The Revised Catalogue Raisonné — The Pastels</a>. Под каждой работой указан источник снимка.',
+ st:function(n){return 'Пастелей: <b>'+n+'</b>';},year:'Дата',sig:'Подпись',ref:'Номер WPI',img:'Снимок',wpi:'Страница в каталоге WPI',full:'Изображение в полном размере',zoom:'Приблизить',close:'Закрыть'},
+ en:{back:'← Oil paintings',h1:'Pastels',eb:'Claude Monet · 1840–1926',
+ lede:'Monet began with caricatures and pastel drawings and returned to pastel throughout his life: Normandy shores in the 1860s, clouds and sunsets, portraits of the Hoschedé children, the London bridges of 1900–1901. Here are all 110 pastels from the revised catalogue being prepared by the Wildenstein Plattner Institute.',
+ src:'Data and images: <a href="https://digitalprojects.wpi.art/monet/artworks" target="_blank" rel="noopener">Wildenstein Plattner Institute, Claude Monet: The Revised Catalogue Raisonné — The Pastels</a>. The photo credit is given for each work.',
+ st:function(n){return 'Pastels: <b>'+n+'</b>';},year:'Date',sig:'Inscription',ref:'WPI number',img:'Photo',wpi:'Page in the WPI catalogue',full:'Full-size image',zoom:'Zoom in',close:'Close'}};
+function t(){return T[lang];}
+function wpi(p){return 'https://digitalprojects.wpi.art/artworks/'+p.id+'-'+p.slug;}
+function render(){
+  document.documentElement.lang=lang;
+  $('back').textContent=t().back;$('h1').textContent=t().h1;$('eb').textContent=t().eb;$('lede').textContent=t().lede;$('src').innerHTML=t().src;
+  $('status').innerHTML=t().st(P.length);
+  document.title=(lang==='ru'?'Клод Моне. Пастели':'Claude Monet. Pastels');
+  [].forEach.call(document.querySelectorAll('.lang button'),function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===lang));});
+  $('grid').innerHTML=P.map(function(p,i){return '<button type="button" class="card" data-i="'+i+'"><span class="frame"><img loading="lazy" decoding="async" src="pastels/400/'+p.k+'.webp" alt="'+esc(p.t)+'"></span><span class="cap"><span class="w">'+esc(p.ref.toUpperCase())+'</span><span class="t">'+esc(p.t)+'</span><span class="m"><span>'+esc(p.y)+'</span></span></span></button>';}).join('');
+}
+function openD(i){cur=i;var p=P[i];
+  $('d-fig').innerHTML='<button type="button" class="zoomable" id="dz" aria-label="'+t().zoom+'"><img src="pastels/1600/'+p.k+'.webp" alt="'+esc(p.t)+'"></button>';
+  $('d-w').textContent=p.ref.toUpperCase();$('d-title').textContent=p.t;
+  var dl=[[t().year,p.y]];if(p.sig)dl.push([t().sig,p.sig.replace(/\*/g,'')]);dl.push([t().img,p.c]);
+  $('d-dl').innerHTML=dl.map(function(x){return '<dt>'+x[0]+'</dt><dd>'+esc(x[1])+'</dd>';}).join('');
+  $('d-links').innerHTML='<a href="'+wpi(p)+'" target="_blank" rel="noopener">'+t().wpi+'</a>';
+  $('d-prev').disabled=i<=0;$('d-next').disabled=i>=P.length-1;
+  if(!$('dlg').open)$('dlg').showModal();
+  $('dz').onclick=function(){openZoom(p);};
+}
+var osd=null;
+function openZoom(p){$('zoom-title').textContent=p.t;$('zoom').showModal();if(osd){osd.destroy();osd=null;}
+  osd=OpenSeadragon({element:$('zoom-view'),prefixUrl:'vendor/openseadragon/images/',tileSources:{type:'image',url:p.z?'pastels/zoom/'+p.k+'.webp':'pastels/1600/'+p.k+'.webp'},showNavigator:true,maxZoomPixelRatio:2});}
+$('zoom-close').onclick=function(){$('zoom').close();};
+$('grid').addEventListener('click',function(e){var b=e.target.closest('.card');if(b)openD(+b.dataset.i);});
+$('d-close').onclick=function(){$('dlg').close();};
+$('d-prev').onclick=function(){if(cur>0)openD(cur-1);};$('d-next').onclick=function(){if(cur<P.length-1)openD(cur+1);};
+$('dlg').addEventListener('keydown',function(e){if(e.key==='ArrowLeft'&&cur>0)openD(cur-1);if(e.key==='ArrowRight'&&cur<P.length-1)openD(cur+1);});
+$('dlg').addEventListener('click',function(e){if(e.target===this)this.close();});
+[].forEach.call(document.querySelectorAll('.lang button'),function(b){b.onclick=function(){lang=b.dataset.lang;try{localStorage.setItem('monet-lang',lang);}catch(e){}render();};});
+render();
+})();
+</script>
+</body>
+</html>

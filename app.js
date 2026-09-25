@@ -2,12 +2,12 @@
 'use strict';
 var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
 var HIST=window.HIST||null,histLoading=false;
-function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=4';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=5';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
 function H(r){return HIST&&HIST[r.k];}
 var PAGE=120;
 
 var T={
- ru:{eyebrow:'В память о мастере',name:'Клод Моне',
+ ru:{eyebrow:'В память о мастере',pastLink:'Пастели Моне — 110 работ →',name:'Клод Моне',
   lede:'Он писал свет — утренний туман над Сеной, стога на закате, пруд с кувшинками в Живерни. Здесь собраны все картины, которые удалось найти в открытых источниках, в порядке каталога Вильденштейна.',
   tlTitle:'Работы по годам',tlHint:'Нажмите на год, чтобы увидеть картины этого года. Повторное нажатие снимает выбор.',
   searchLabel:'Поиск',ph:'Название, место, музей, номер W…',sortW:'По каталогу (W)',sortYear:'По году',sortTitle:'По названию',
@@ -23,7 +23,7 @@ var T={
   noimg:'Нет открытого изображения',lostT:'Утраченные и неизвестные работы',lostI:'Эти картины есть в каталоге Вильденштейна, но их изображение неизвестно: одни утрачены или уничтожены, другие известны только по письмам Моне, счетам и архивам торговцев, и ни одной фотографии их не сохранилось.',hHist:'История картины',hProv:'Путь картины: владельцы',hFate:'Судьба картины',hSrc:'По данным каталога-резоне Д. Вильденштейна (1996). Пересказ, не цитата.',noPhotoT:'Изображение неизвестно',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
   commons:'Изображение на Викискладе',wikidata:'Wikidata',wiki:'Статья в Википедии',noW:'без номера W',close:'Закрыть',
   yearSel:function(y){return 'Год: <b>'+y+'</b>';}},
- en:{eyebrow:'In memory of the master',name:'Claude Monet',
+ en:{eyebrow:'In memory of the master',pastLink:'Monet’s pastels — 110 works →',name:'Claude Monet',
   lede:'He painted light: morning mist over the Seine, haystacks at sunset, the water-lily pond at Giverny. This catalogue gathers every painting we could find in open sources, ordered by the Wildenstein catalogue.',
   tlTitle:'Works by year',tlHint:'Click a year to see its paintings. Click again to clear.',
   searchLabel:'Search',ph:'Title, place, museum, W number…',sortW:'By catalogue (W)',sortYear:'By year',sortTitle:'By title',
@@ -210,6 +210,7 @@ function openD(i){
 function renderHist(r){
   var h=H(r),o='',ru=st.lang==='ru'?0:1;
   if(h){
+    if(h.nw)o+='<h3>'+(st.lang==='ru'?'Находка':'Rediscovered')+'</h3><p>'+esc(h.nw[ru])+' <a href="'+h.nw[2]+'" target="_blank" rel="noopener">'+esc(h.nw[3])+'</a></p>';
     if(h.fx&&hasImg(r))o+='<h3>'+tt().hFate+'</h3><p>'+esc(h.fx[ru])+'</p>';
     if(h.h&&h.h[ru])o+='<h3>'+tt().hHist+'</h3><p>'+esc(h.h[ru])+'</p>';
     if(h.nt)o+='<h3>'+(st.lang==='ru'?'Версия':'A possibility')+'</h3><p>'+esc(h.nt[ru])+'</p>';

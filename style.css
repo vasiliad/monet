@@ -188,3 +188,5 @@ dialog::backdrop{background:rgba(10,18,20,.72)}
 .pager button:disabled{opacity:.4;cursor:default}
 .pager .gap{padding:0 4px;color:var(--muted)}
 @media (max-width:560px){.pager button{min-width:34px;height:34px;padding:0 9px;font-size:13px}}
+
+.xlink{margin:18px 0 0;font-weight:600}.xlink a{text-decoration:none;border-bottom:1px solid currentColor}
