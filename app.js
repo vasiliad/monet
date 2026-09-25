@@ -58,14 +58,15 @@ function isPrivate(r){return r.st!=='museum';}
 function sale(r){if(!r.sale)return '';return (st.lang==='ru'?'последняя известная продажа: ':'last known sale: ')+r.sale;}
 function vol(r){var n=parseInt(r.w,10);if(!n)return null;return n<=968?['II','c.rclaudemonetvolumeiiwildensteininstitute']:n<=1595?['III','c.rclaudemonetvolumeiiiwildensteininstitute']:['IV','c.rclaudemonetvolumeivwildensteininstitute'];}
 var LOC=window.LOCAL||{};var ZOOM_BASE=window.ZOOM_BASE||'https://vasiliad.github.io/monet-zoom/';
-function loc(r){return r.noimg?null:LOC[r.k];}
+function lk(r){if(LOC[r.k])return r.k;if(r.same&&LOC['w'+r.same])return 'w'+r.same;if(r.whole&&LOC['w'+r.whole])return 'w'+r.whole;return r.k;}
+function loc(r){return r.noimg?null:LOC[lk(r)];}
 function thumb(f,w){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width='+w;}
 function px(r){return r.hi?r.hi.w*r.hi.h:(r.iw?r.iw*r.ih:0);}
 function hasImg(r){return !!(loc(r)||r.img||(r.hi&&r.hi.iiif&&r.hi.src!=='aic'));}
 function gone(r){return ['lost','destroyed','unknown'].indexOf(r.st)>=0;}
 function fateLine(r){var h=H(r);if(h&&h.fx)return h.fx[st.lang==='ru'?0:1];return '';}
 function qual(r){if(!r.img&&!r.hi)return 'none';if(r.scan&&!r.hi)return 'scan';var p=px(r);return p>=8e6?'hi':p>=2e6?'mid':'low';}
-function bigSrc(r){if(loc(r))return 'img/1600/'+r.k+'.webp';if(r.hi&&r.hi.iiif&&(r.hi.src!=='aic'||!r.img))return r.hi.iiif+'/full/'+(r.hi.src==='aic'?'1686,':'1600,')+'/0/default.jpg';if(r.hi&&r.hi.url&&!r.img)return r.hi.url;return r.img?thumb(r.img,1280):'';}
+function bigSrc(r){if(loc(r))return 'img/1600/'+lk(r)+'.webp';if(r.hi&&r.hi.iiif&&(r.hi.src!=='aic'||!r.img))return r.hi.iiif+'/full/'+(r.hi.src==='aic'?'1686,':'1600,')+'/0/default.jpg';if(r.hi&&r.hi.url&&!r.img)return r.hi.url;return r.img?thumb(r.img,1280):'';}
 function origUrl(r){if(r.hi)return r.hi.iiif?r.hi.iiif+'/full/max/0/default.jpg':r.hi.url;return r.img?'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(r.img):'';}
 function srcName(r){if(r.hi)return {nga:'National Gallery of Art',aic:'Art Institute of Chicago',cma:'Cleveland Museum of Art'}[r.hi.src];return r.scan?(st.lang==='ru'?'Викисклад, скан из каталога-резоне':'Wikimedia Commons, catalogue scan'):(st.lang==='ru'?'Викисклад':'Wikimedia Commons');}
 function nf(n){return n.toLocaleString(st.lang==='ru'?'ru-RU':'en-US');}
@@ -134,7 +135,7 @@ function lostCard(r){
 }
 function card(r){
   if(!hasImg(r))return lostCard(r);
-  var tsrc=loc(r)?'img/400/'+r.k+'.webp':r.img?thumb(r.img,330):(r.hi&&r.hi.iiif&&r.hi.src!=='aic'?r.hi.iiif+'/full/400,/0/default.jpg':'');
+  var tsrc=loc(r)?'img/400/'+lk(r)+'.webp':r.img?thumb(r.img,330):(r.hi&&r.hi.iiif&&r.hi.src!=='aic'?r.hi.iiif+'/full/400,/0/default.jpg':'');
   var im=tsrc?'<img loading="lazy" decoding="async" src="'+tsrc+'" alt="'+esc(title(r))+'">'+(qual(r)==='hi'?'<span class="hd">HD</span>':''):
     '<span class="noimg"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3 16l5-5 4 4 3-3 6 6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'+tt().noimg+'</span>';
   var m=[r.y,place(r)+(country(r)&&r.st==='museum'?'':(country(r)?' · '+country(r):''))].filter(Boolean).map(function(x){return '<span>'+esc(x)+'</span>';}).join('');
@@ -236,7 +237,7 @@ function openZoom(r){
   if(!window.OpenSeadragon){window.open(origUrl(r),'_blank','noopener');return;}
   var z=$('zoom');if(!z.open)z.showModal();
   var ts;
-  if(loc(r)&&loc(r)[2])ts={type:'image',url:ZOOM_BASE+r.k+'.webp'};
+  if(loc(r)&&loc(r)[2])ts={type:'image',url:ZOOM_BASE+lk(r)+'.webp'};
   else if(r.hi&&r.hi.iiif&&(r.hi.src!=='aic'||!r.img))ts=r.hi.iiif+'/info.json';
   else if(r.hi&&r.hi.url)ts={type:'image',url:r.hi.url};
   else ts={type:'image',url:thumb(r.img,Math.min(r.iw||2560,3840))};
