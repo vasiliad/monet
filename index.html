@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <a class="skip" href="#grid">К каталогу</a>
@@ -73,8 +73,9 @@
 
 <main class="wrap">
   <p class="status" id="status" aria-live="polite"></p>
+  <nav class="pager" id="pager-top" aria-label="Страницы"></nav>
   <div class="grid" id="grid"></div>
-  <div class="more"><button type="button" id="more" hidden></button></div>
+  <nav class="pager" id="pager-bot" aria-label="Страницы"></nav>
   <section class="lostsec" id="lostsec" hidden aria-labelledby="lost-h">
     <h2 id="lost-h"></h2>
     <p class="lost-i" id="lost-i"></p>
@@ -133,8 +134,8 @@
 </dialog>
 
 <script src="vendor/openseadragon/openseadragon.min.js"></script>
-<script src="data/monet.js?v=2"></script>
+<script src="data/monet.js?v=3"></script>
 <script src="data/local.js" onerror="window.LOCAL={}"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
