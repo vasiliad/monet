@@ -7,8 +7,8 @@ function H(r){return HIST&&HIST[r.k];}
 var PAGE=120;
 
 var T={
- ru:{eyebrow:'В память о мастере',pastLink:'Пастели Моне — 110 работ →',name:'Клод Моне',
-  lede:'Он писал свет — утренний туман над Сеной, стога на закате, пруд с кувшинками в Живерни. Здесь собраны все картины, которые удалось найти в открытых источниках, в порядке каталога Вильденштейна.',
+ ru:{eyebrow:'5 декабря 1926 — 5 декабря 2026',cent:'Сто лет памяти',pastLink:'Пастели Моне — 110 работ →',name:'Клод Моне',
+  lede:'Сто лет назад, 5 декабря 1926 года, в Живерни умер Клод Моне. Он писал свет — утренний туман над Сеной, стога на закате, пруд с кувшинками в своём саду. Здесь собраны все картины, которые удалось найти в открытых источниках, в порядке каталога Вильденштейна.',
   tlTitle:'Работы по годам',tlHint:'Нажмите на год, чтобы увидеть картины этого года. Повторное нажатие снимает выбор.',
   searchLabel:'Поиск',ph:'Название, место, музей, номер W…',sortW:'По каталогу (W)',sortYear:'По году',sortTitle:'По названию',
   whereAll:'Все собрания',whereMuseum:'Только музеи',wherePrivate:'Частные коллекции',whereLost:'Утрачены или неизвестно где',
@@ -23,8 +23,8 @@ var T={
   noimg:'Нет открытого изображения',lostT:'Утраченные и неизвестные работы',lostI:'Эти картины есть в каталоге Вильденштейна, но их изображение неизвестно: одни утрачены или уничтожены, другие известны только по письмам Моне, счетам и архивам торговцев, и ни одной фотографии их не сохранилось.',hHist:'История картины',hProv:'Путь картины: владельцы',hFate:'Судьба картины',hSrc:'По данным каталога-резоне Д. Вильденштейна (1996). Пересказ, не цитата.',noPhotoT:'Изображение неизвестно',year:'Год',dims:'Размер',dimsU:'см',where:'Где хранится',cat:'Каталог',series:'Серия',
   commons:'Изображение на Викискладе',wikidata:'Wikidata',wiki:'Статья в Википедии',noW:'без номера W',close:'Закрыть',
   yearSel:function(y){return 'Год: <b>'+y+'</b>';}},
- en:{eyebrow:'In memory of the master',pastLink:'Monet’s pastels — 110 works →',name:'Claude Monet',
-  lede:'He painted light: morning mist over the Seine, haystacks at sunset, the water-lily pond at Giverny. This catalogue gathers every painting we could find in open sources, ordered by the Wildenstein catalogue.',
+ en:{eyebrow:'5 December 1926 — 5 December 2026',cent:'A hundred years of remembrance',pastLink:'Monet’s pastels — 110 works →',name:'Claude Monet',
+  lede:'A hundred years ago, on 5 December 1926, Claude Monet died at Giverny. He painted light: morning mist over the Seine, haystacks at sunset, the water-lily pond in his own garden. This catalogue gathers every painting we could find in open sources, ordered by the Wildenstein catalogue.',
   tlTitle:'Works by year',tlHint:'Click a year to see its paintings. Click again to clear.',
   searchLabel:'Search',ph:'Title, place, museum, W number…',sortW:'By catalogue (W)',sortYear:'By year',sortTitle:'By title',
   whereAll:'All collections',whereMuseum:'Museums only',wherePrivate:'Private collections',whereLost:'Lost or location unknown',
