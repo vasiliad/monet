@@ -2,7 +2,7 @@
 'use strict';
 var DATA=(window.MONET||[]).filter(function(r){return !r.hide;}).map(function(r,i){r.i=i;return r;});
 var HIST=window.HIST||null,histLoading=false;
-function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v=7';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
+function loadHist(cb){if(HIST){cb&&cb();return;}if(histLoading)return;histLoading=true;var s=document.createElement('script');s.src='data/hist.js?v='+(window.MONET_V||15)+'';s.onload=function(){HIST=window.HIST||{};cb&&cb();};document.head.appendChild(s);}
 function H(r){if(!HIST)return null;var own=HIST[r.k];if(r.same){var o=HIST['w'+r.same];if(o){var m={};for(var x in o)if(x!=='fx'&&x!=='f')m[x]=o[x];if(own&&own.nw)m.nw=own.nw;return m;}}return own;}
 var PAGE=120;
 
@@ -156,7 +156,7 @@ function renderGrid(){
   if(st.page>=pages)st.page=pages-1;if(st.page<0)st.page=0;
   var a=st.page*PAGE,n=Math.min(a+PAGE,L.length);
   var filt=st.q||st.ser||st.year||st.cty||st.where!=='all'||st.q2!=='all';
-  var s=L.length?tt().range(a+1,n,L.length):tt().found(0);
+  var s=L.length?tt().range(a+1,n,L.length):(st.lost.length?tt().found(st.lost.length)+(st.lang==='ru'?' — без изображения, см. ниже':' — no image, see below'):tt().found(0));
   if(st.year)s+=' · '+tt().yearSel(st.year);
   if(filt)s+=' <button type="button" id="reset">'+tt().reset+'</button>';
   $('status').innerHTML=s;
@@ -191,6 +191,7 @@ function openD(i){
   if(country(r))dl.push([st.lang==='ru'?'Страна':'Country',country(r)]);
   if(r.sale)dl.push([st.lang==='ru'?'Продажа':'Sale',(st.lang==='ru'?'последняя известная: ':'last known: ')+r.sale]);
   if(r.note==='same215')dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'По каталогу это та же картина, что W215':'Per the catalogue, the same painting as W215']);
+  if(r.orangerie)dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'Одно из восьми больших панно «Кувшинок» в Музее Оранжери. Каталог Вильденштейна описывает эти «Большие декорации» отдельно, вне нумерации W':'One of the eight large Water Lilies panels in the Musée de l’Orangerie; the Wildenstein catalogue describes these Grandes Décorations separately, outside the W numbering']);
   if(r.same)dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'По каталогу Вильденштейна это та же картина, что W'+r.same+'; изображение и сведения — оттуда':'Per the Wildenstein catalogue this is the same painting as W'+r.same+'; image and details are taken from there']);
   if(r.whole)dl.push([st.lang==='ru'?'Изображение':'Image',st.lang==='ru'?'Показана вся композиция целиком, частью которой является эта панель (см. W'+r.whole+')':'The photo shows the whole composition this panel belongs to (see W'+r.whole+')']);
   if(false&&r.w==='96')dl.push([st.lang==='ru'?'Примечание':'Note',st.lang==='ru'?'Номер есть в каталоге; распознать запись из скана не удалось — см. том II':'The number exists in the catalogue; the scanned entry could not be read — see volume II']);
@@ -209,7 +210,7 @@ function openD(i){
   renderHist(r);if(!HIST)loadHist(function(){if(cur===r.i){renderHist(r);var x=$('d-npx');if(x)x.textContent=fateLine(r);}});
   var p=st.list.indexOf(r);$('d-prev').disabled=p<=0;$('d-next').disabled=p<0||p>=st.list.length-1;
   if(!dlg.open)dlg.showModal();
-  var h=r.w?'w'+r.w:'i'+r.i;if(location.hash!=='#'+h)history.replaceState(null,'','#'+h);
+  var h=r.w?'w'+r.w:r.k;if(location.hash!=='#'+h)history.replaceState(null,'','#'+h);
 }
 function renderHist(r){
   var h=H(r),o='',ru=st.lang==='ru'?0:1;
@@ -272,7 +273,7 @@ $('lang-en').addEventListener('click',function(){setLang('en');});
 setLang(st.lang);
 /* deep link */
 var h=location.hash.slice(1);
-function openHash(){var h=location.hash.slice(1);if(!h)return;var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r&&cur!==r.i)openD(r.i);}
+function openHash(){var h=location.hash.slice(1);if(!h)return;var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='x')r=DATA.filter(function(x){return x.k===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r&&cur!==r.i)openD(r.i);}
 window.addEventListener('hashchange',openHash);
-if(h){var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r)openD(r.i);}
+if(h){var r=null;if(h[0]==='w')r=DATA.filter(function(x){return 'w'+x.w===h;})[0];else if(h[0]==='x')r=DATA.filter(function(x){return x.k===h;})[0];else if(h[0]==='i')r=DATA[+h.slice(1)];if(r)openD(r.i);}
 })();
